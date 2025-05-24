@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:54:37 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/23 22:04:23 by migusant         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:35:44 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 typedef struct s_node
 {
 	int				value;
+	int				index;
 	struct s_node	*next;
 }	t_node;
 
