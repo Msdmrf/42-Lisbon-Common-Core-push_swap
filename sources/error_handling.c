@@ -1,43 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_ops_push.c                                   :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 16:08:19 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/22 20:10:41 by migusant         ###   ########.fr       */
+/*   Created: 2025/05/21 16:52:03 by migusant          #+#    #+#             */
+/*   Updated: 2025/05/29 12:12:01 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-void	pa(t_stack *a, t_stack *b)
+void	error_exit(void)
 {
-	t_node	*temp;
-
-	if (!b || !b->top)
-		return ;
-	temp = b->top;
-	b->top = b->top->next;
-	temp->next = a->top;
-	a->top = temp;
-	a->size++;
-	b->size--;
-	write(1, "pa\n", 3);
+	write(2, "Error\n", 6);
+	exit(1);
 }
 
-void	pb(t_stack *a, t_stack *b)
+void	cleanup_and_exit(t_stack *a, t_stack *b, int exit_code)
 {
-	t_node	*temp;
-
-	if (!a || !a->top)
-		return ;
-	temp = a->top;
-	a->top = a->top->next;
-	temp->next = b->top;
-	b->top = temp;
-	b->size++;
-	a->size--;
-	write(1, "pb\n", 3);
+	if (a)
+		free_stack(a);
+	if (b)
+		free_stack(b);
+	exit(exit_code);
 }

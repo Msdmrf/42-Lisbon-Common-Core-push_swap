@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 12:38:24 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/24 19:29:17 by migusant         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:12:46 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,20 @@ void	sort_large(t_stack *a, t_stack *b)
 		sort_by_bit(a, b, i);
 		i++;
 	}
+}
+
+void	sort_dispatch(t_stack *a, t_stack *b)
+{
+	if (a->size < 2)
+		return ;
+	else if (a->size == 2)
+		sort_two(a);
+	else if (a->size == 3)
+		sort_three(a);
+	else if (a->size == 4)
+		sort_four(a, b);
+	else if (a->size == 5)
+		sort_five(a, b);
+	else
+		sort_large(a, b);
 }

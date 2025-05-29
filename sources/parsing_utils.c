@@ -5,17 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 16:08:37 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/22 21:15:06 by migusant         ###   ########.fr       */
+/*   Created: 2025/05/21 16:08:52 by migusant          #+#    #+#             */
+/*   Updated: 2025/05/29 12:16:05 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-void	error_exit(void)
+int	has_content(const char *str)
 {
-	write(2, "Error\n", 6);
-	exit(1);
+	if (!str || !*str)
+		return (0);
+	while (*str)
+	{
+		if (!(*str == ' ' || *str == '\t' || *str == '\n'
+				|| *str == '\v' || *str == '\f' || *str == '\r'))
+			return (1);
+		str++;
+	}
+	return (0);
 }
 
 int	is_valid_number(char *str)
@@ -34,26 +42,6 @@ int	is_valid_number(char *str)
 		i++;
 	}
 	return (1);
-}
-
-int	check_duplicates(int *array, int size)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size - 1)
-	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (array[i] == array[j])
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 }
 
 int	ft_atoi_safe(const char *str, int *number)
@@ -83,4 +71,44 @@ int	ft_atoi_safe(const char *str, int *number)
 		str++;
 	}
 	return (*number = sign * result, 1);
+}
+
+int	process_numbers(t_stack *stack, char *str)
+{
+	char	**numbers;
+	int		number;
+	int		i;
+
+	if (!has_content(str))
+		return (0);
+	numbers = ft_split(str, ' ');
+	if (!numbers)
+		return (0);
+	i = 0;
+	while (numbers[i])
+		i++;
+	while (--i >= 0)
+	{
+		if (!is_valid_number(numbers[i]) || !ft_atoi_safe(numbers[i], &number))
+		{
+			free_split(numbers);
+			return (0);
+		}
+		push(stack, number);
+	}
+	free_split(numbers);
+	return (1);
+}
+
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }

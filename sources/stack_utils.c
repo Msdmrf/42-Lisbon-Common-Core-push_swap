@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:58:41 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/23 22:06:10 by migusant         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:13:30 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,4 @@ int	is_sorted(t_stack *stack)
 		cur = cur->next;
 	}
 	return (1);
-}
-
-int	*stack_to_array(t_stack *stack, int size)
-{
-	int		*arr;
-	t_node	*cur;
-	int		i;
-
-	arr = malloc(sizeof(int) * size);
-	if (!arr)
-		return (NULL);
-	cur = stack->top;
-	i = 0;
-	while (cur && i < size)
-	{
-		arr[i++] = cur->value;
-		cur = cur->next;
-	}
-	return (arr);
 }

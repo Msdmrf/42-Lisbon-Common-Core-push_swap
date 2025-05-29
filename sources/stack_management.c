@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_core.c                                       :+:      :+:    :+:   */
+/*   stack_management.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 17:13:03 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/22 20:09:57 by migusant         ###   ########.fr       */
+/*   Created: 2025/05/21 17:14:43 by migusant          #+#    #+#             */
+/*   Updated: 2025/05/29 12:17:34 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,6 @@ t_stack	*create_stack(char id)
 	return (stack);
 }
 
-void	push(t_stack *stack, int value)
-{
-	t_node	*new;
-
-	new = malloc(sizeof(t_node));
-	if (!new)
-		error_exit();
-	new->value = value;
-	new->next = stack->top;
-	stack->top = new;
-	stack->size++;
-}
-
 int	pop(t_stack *stack)
 {
 	int		value;
@@ -51,6 +38,19 @@ int	pop(t_stack *stack)
 	free(tmp);
 	stack->size--;
 	return (value);
+}
+
+void	push(t_stack *stack, int value)
+{
+	t_node	*new;
+
+	new = malloc(sizeof(t_node));
+	if (!new)
+		error_exit();
+	new->value = value;
+	new->next = stack->top;
+	stack->top = new;
+	stack->size++;
 }
 
 void	free_stack(t_stack *stack)
