@@ -6,7 +6,7 @@
 #    By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/21 22:21:06 by migusant          #+#    #+#              #
-#    Updated: 2025/05/29 12:07:06 by migusant         ###   ########.fr        #
+#    Updated: 2025/05/30 12:43:33 by migusant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,17 @@ s/TEMPLEAK="leaks command not found"/TEMPLEAK="valgrind command not found"/g
 s/LEAKFLAG="leaks command not found"/LEAKFLAG="valgrind command not found"/g
 s/rm -rf a b x y/rm -rf a b x y valgrind.log/g' basic_test.sh
 
+sed -i.backup '
+s/leaks -atExit -- \(.*\) > a 2>c/valgrind --leak-check=full --error-exitcode=1 --log-file=valgrind.log \1 >\/dev\/null 2>\&1/g
+/cat a | grep \": 0 leaks for 0 total leaked bytes\" > b/d
+s/if \[\[ -s b \]\]/if [ -f valgrind.log ] \&\& grep -q "All heap blocks were freed -- no leaks are possible" valgrind.log/g
+s/TEMPLEAK=\"leaks command not found	\"/TEMPLEAK=\"valgrind command not found	\"/g
+s/LEAKFLAG=\"leaks command not found	\"/LEAKFLAG=\"valgrind command not found	\"/g
+s/rm -rf a/rm -rf valgrind.log/g
+s/rm -rf b//g
+s/rm -rf c//g' loop.sh
+
 # bash basic_test.sh
+# bash loop.sh 100 10
 
 # bash clean.sh
