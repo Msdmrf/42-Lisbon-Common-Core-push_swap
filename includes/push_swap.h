@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:54:37 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/29 12:08:40 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:50:56 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ int			is_sorted(t_stack *stack);
 // Sorting Algorithms
 void		sort_two(t_stack *a);
 void		sort_three(t_stack *a);
-void		sort_four(t_stack *a, t_stack *b);
-void		sort_five(t_stack *a, t_stack *b);
-void		sort_large(t_stack *a, t_stack *b);
+void		sort_n(t_stack *a, t_stack *b, int n);
+void		sort_radix(t_stack *a, t_stack *b);
 void		sort_dispatch(t_stack *a, t_stack *b);
 
 #endif
