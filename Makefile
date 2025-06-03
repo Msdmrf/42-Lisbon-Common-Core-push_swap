@@ -6,7 +6,7 @@
 #    By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/21 15:52:35 by migusant          #+#    #+#              #
-#    Updated: 2025/05/29 12:06:29 by migusant         ###   ########.fr        #
+#    Updated: 2025/06/02 13:26:21 by migusant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRC_FILES = main.c \
 				parsing.c \
 				parsing_utils.c \
 				sort_small.c \
-				sort_large.c \
+				sort_big.c \
 				stack_init.c \
 				stack_management.c \
 				stack_utils.c \
