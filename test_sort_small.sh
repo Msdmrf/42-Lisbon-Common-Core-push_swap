@@ -6,7 +6,7 @@
 #    By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/28 10:09:41 by migusant          #+#    #+#              #
-#    Updated: 2025/05/28 19:48:41 by migusant         ###   ########.fr        #
+#    Updated: 2025/06/03 18:12:50 by migusant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,12 @@ elif [ ! -x "./push_swap" ]; then
     exit 1
 fi
 
+# Check if checker exists
+if [ ! -f "./.checker_linux" ] || [ ! -x "./.checker_linux" ]; then
+    echo -e "${RED}Error: .checker_linux not found or not executable${NC}"
+    exit 1
+fi
+
 # Hardcode targets for small arrays (1-11 numbers)
 case $NUM_COUNT in
     1)
@@ -69,24 +75,24 @@ case $NUM_COUNT in
         ACCEPTABLE_TARGET=3
         ;;
     4)
-        MAX_TARGET=7
-        GOOD_TARGET=8
-        ACCEPTABLE_TARGET=9
+        MAX_TARGET=5
+        GOOD_TARGET=6
+        ACCEPTABLE_TARGET=6
         ;;
     5)
-        MAX_TARGET=12
-        GOOD_TARGET=13
-        ACCEPTABLE_TARGET=14
+        MAX_TARGET=8
+        GOOD_TARGET=10
+        ACCEPTABLE_TARGET=12
         ;;
     6)
-        MAX_TARGET=13
-        GOOD_TARGET=15
-        ACCEPTABLE_TARGET=17
+        MAX_TARGET=11
+        GOOD_TARGET=13
+        ACCEPTABLE_TARGET=15
         ;;
     7)
-        MAX_TARGET=16
-        GOOD_TARGET=18
-        ACCEPTABLE_TARGET=20
+        MAX_TARGET=15
+        GOOD_TARGET=17
+        ACCEPTABLE_TARGET=19
         ;;
     8)
         MAX_TARGET=19
@@ -94,24 +100,24 @@ case $NUM_COUNT in
         ACCEPTABLE_TARGET=23
         ;;
     9)
-        MAX_TARGET=22
-        GOOD_TARGET=24
-        ACCEPTABLE_TARGET=26
+        MAX_TARGET=23
+        GOOD_TARGET=25
+        ACCEPTABLE_TARGET=27
         ;;
     10)
-        MAX_TARGET=25
-        GOOD_TARGET=27
-        ACCEPTABLE_TARGET=29
+        MAX_TARGET=28
+        GOOD_TARGET=30
+        ACCEPTABLE_TARGET=32
         ;;
     11)
-        MAX_TARGET=29
-        GOOD_TARGET=31
-        ACCEPTABLE_TARGET=33
-        ;;
-    12)
         MAX_TARGET=33
         GOOD_TARGET=35
         ACCEPTABLE_TARGET=37
+        ;;
+    12)
+        MAX_TARGET=38
+        GOOD_TARGET=40
+        ACCEPTABLE_TARGET=42
         ;;
 esac
 
@@ -122,13 +128,27 @@ mkdir -p test_sort/small
 total_operations=0
 min_operations=999999
 max_operations=0
+failed_tests=0
 
 # Print header information
 echo -e "\n${BLUE}=== Testing $NUM_COUNT Random Integers ===${NC}"
-echo -e "${BLUE}Target: < $MAX_TARGET operations${NC}\n"
+echo "Targets:"
+echo -e "${GREEN}Excellent: ≤ $MAX_TARGET operations${NC}"
+echo -e "${LIGHT_GREEN}Good: ≤ $GOOD_TARGET operations${NC}"
+echo -e "${YELLOW}Acceptable: ≤ $ACCEPTABLE_TARGET operations${NC}"
+echo -e "${RED}Needs improvement: > $ACCEPTABLE_TARGET operations${NC}\n"
 
 for i in $(seq 1 $TEST_COUNT); do
     RANDOM_SEQ=$(shuf -i 0-4294967295 -n $NUM_COUNT | awk '{print $1 - 2147483648}')
+    
+    # First check if sorting is correct using checker
+    CHECKER_RESULT=$(./push_swap $RANDOM_SEQ | ./.checker_linux $RANDOM_SEQ)
+    
+    if [ "$CHECKER_RESULT" != "OK" ]; then
+        echo -e "Test $i/$TEST_COUNT: ${RED}FAIL${NC} - Stack not correctly sorted"
+        failed_tests=$((failed_tests + 1))
+        continue
+    fi
     
     # Save numbers and run push_swap with valgrind
     echo "$RANDOM_SEQ" > "test_sort/small/test${i}_numbers.txt"
@@ -146,7 +166,16 @@ for i in $(seq 1 $TEST_COUNT); do
         max_operations=$OPERATION_COUNT
     fi
     
-    echo -e "Test $i/$TEST_COUNT: ${GREEN}PASS${NC} ($OPERATION_COUNT operations)"
+    # Color the PASS based on operation count
+    if [ $OPERATION_COUNT -le $MAX_TARGET ]; then
+        echo -e "Test $i/$TEST_COUNT: ${GREEN}PASS${NC} ($OPERATION_COUNT operations)"
+    elif [ $OPERATION_COUNT -le $GOOD_TARGET ]; then
+        echo -e "Test $i/$TEST_COUNT: ${LIGHT_GREEN}PASS${NC} ($OPERATION_COUNT operations)"
+    elif [ $OPERATION_COUNT -le $ACCEPTABLE_TARGET ]; then
+        echo -e "Test $i/$TEST_COUNT: ${YELLOW}PASS${NC} ($OPERATION_COUNT operations)"
+    else
+        echo -e "Test $i/$TEST_COUNT: ${RED}PASS${NC} ($OPERATION_COUNT operations)"
+    fi
 done
 
 # Calculate average
@@ -154,24 +183,65 @@ average_operations=$((total_operations / TEST_COUNT))
 
 # Print results
 echo -e "\n${BLUE}=== Test Results ===${NC}"
-echo "Total tests: $TEST_COUNT"
-echo -e "${GREEN}Passed: $TEST_COUNT${NC}"
+echo "Total: $TEST_COUNT"
+echo "Failed: $failed_tests"
+successful_tests=$((TEST_COUNT - failed_tests))
+echo "Passed: $successful_tests"
+
+# Only show categories breakdown if there are no failed tests
+if [ $failed_tests -eq 0 ]; then
+    # Only count successful tests for categories
+    excellent_count=0
+    good_count=0
+    acceptable_count=0
+    needs_improvement_count=0
+
+    # Only process successful tests
+    for i in $(seq 1 $TEST_COUNT); do
+        if [ -f "test_sort/small/test${i}_output.txt" ]; then
+            OPERATION_COUNT=$(grep -v "==" "test_sort/small/test${i}_output.txt" | wc -l)
+            if [ $OPERATION_COUNT -le $MAX_TARGET ]; then
+                excellent_count=$((excellent_count + 1))
+            elif [ $OPERATION_COUNT -le $GOOD_TARGET ]; then
+                good_count=$((good_count + 1))
+            elif [ $OPERATION_COUNT -le $ACCEPTABLE_TARGET ]; then
+                acceptable_count=$((acceptable_count + 1))
+            else
+                needs_improvement_count=$((needs_improvement_count + 1))
+            fi
+        fi
+    done
+
+    # Display results by category only if there are no failed tests
+    echo -e "\n${BLUE}=== Test Results by Category ===${NC}"
+    [ $excellent_count -gt 0 ] && echo -e "${GREEN}Excellent: $excellent_count${NC}"
+    [ $good_count -gt 0 ] && echo -e "${LIGHT_GREEN}Good: $good_count${NC}"
+    [ $acceptable_count -gt 0 ] && echo -e "${YELLOW}Acceptable: $acceptable_count${NC}"
+    [ $needs_improvement_count -gt 0 ] && echo -e "${RED}Needs improvement: $needs_improvement_count${NC}"
+fi
 
 echo -e "\n${BLUE}=== Operation Statistics ===${NC}"
-echo "Average operations: $average_operations"
-echo "Minimum operations: $min_operations"
-echo "Maximum operations: $max_operations"
-echo "Target (max): $MAX_TARGET"
+# Only calculate average if there are successful tests
+if [ $successful_tests -gt 0 ]; then
+    average_operations=$((total_operations / successful_tests))
+    echo "Average operations: $average_operations"
+    echo "Minimum operations: $min_operations"
+    echo "Maximum operations: $max_operations"
+else
+    echo "No successful tests to calculate statistics"
+fi
 echo
 
 # Final assessment
-if [ $average_operations -le $MAX_TARGET ]; then
-    echo -e "${GREEN}🎉 All tests passed! Your implementation is working correctly!${NC}"
-    echo -e "${GREEN}📋 Grade: Excellent (≤$MAX_TARGET operations)${NC}"
+if [ $failed_tests -gt 0 ]; then
+    echo -e "${RED}❌ Some tests failed! Please check your implementation.${NC}\n"
+elif [ $average_operations -le $MAX_TARGET ]; then
+    echo -e "${GREEN}🎉 All tests passed! Your implementation is working correctly!${NC}\n"
+    echo -e "${GREEN}📋 Grade: Excellent (≤$MAX_TARGET operations)${NC}\n"
 elif [ $average_operations -le $GOOD_TARGET ]; then
-    echo -e "${LIGHT_GREEN}📋 Grade: Good (≤$GOOD_TARGET operations)${NC}"
+    echo -e "${LIGHT_GREEN}📋 Grade: Good (≤$GOOD_TARGET operations)${NC}\n"
 elif [ $average_operations -le $ACCEPTABLE_TARGET ]; then
-    echo -e "${YELLOW}📋 Grade: Acceptable (≤$ACCEPTABLE_TARGET operations)${NC}"
+    echo -e "${YELLOW}📋 Grade: Acceptable (≤$ACCEPTABLE_TARGET operations)${NC}\n"
 else
-    echo -e "${RED}📋 Grade: Needs improvement (>$ACCEPTABLE_TARGET operations)${NC}"
+    echo -e "${RED}📋 Grade: Needs improvement (>$ACCEPTABLE_TARGET operations)${NC}\n"
 fi
