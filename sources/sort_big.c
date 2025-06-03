@@ -6,9 +6,33 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 12:38:24 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/03 18:02:13 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:23:34 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/* Change to an implementation that does this
+
+For bit 0 in stack A:
+Push numbers from stack A to stack B if bit 0 is 1
+Keep numbers in stack A if bit 0 is 0
+
+For bit 1 in stack B:
+Push numbers from stack B to stack A if bit 1 is 0
+Keep numbers in stack B if bit 1 is 1
+
+For bit 1 in stack A:
+Push numbers from stack A to stack B if bit 1 is 1
+Keep numbers in stack A if bit 1 is 0
+
+For bit 2 in stack B:
+Push numbers from stack B to stack A if bit 2 is 0
+Keep numbers in stack B if bit 2 is 1
+
+For bit 2 in stack A:
+Push numbers from stack A to stack B if bit 2 is 1
+Keep numbers in stack A if bit 2 is 0
+
+And so on! */
 
 #include "../includes/push_swap.h"
 
