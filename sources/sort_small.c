@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:56:44 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/29 12:13:06 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:33:58 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,48 +45,27 @@ void	sort_three(t_stack *a)
 	}
 }
 
-void	sort_four(t_stack *a, t_stack *b)
+void	sort_n(t_stack *a, t_stack *b, int n)
 {
 	int	min;
 	int	pos;
 
+	if (n <= 1 || is_sorted(a))
+		return ;
+	if (n == 2)
+		return (sort_two(a));
+	if (n == 3)
+		return (sort_three(a));
 	min = find_min(a);
 	pos = find_position(a, min);
 	while (a->top->value != min)
 	{
-		if (pos <= a->size / 2)
+		if (pos <= n / 2)
 			ra(a);
 		else
 			rra(a);
 	}
 	pb(a, b);
-	sort_three(a);
-	pa(a, b);
-}
-
-void	sort_five(t_stack *a, t_stack *b)
-{
-	int	min;
-	int	max;
-	int	to_push;
-
-	min = find_min(a);
-	max = find_max(a);
-	to_push = 0;
-	while (a->size > 3)
-	{
-		if (a->top->value == min || a->top->value == max)
-		{
-			pb(a, b);
-			to_push++;
-		}
-		else
-			ra(a);
-	}
-	sort_three(a);
-	if (b->top && b->top->next && b->top->value < b->top->next->value)
-		sb(b);
-	pa(a, b);
-	ra(a);
+	sort_n(a, b, n - 1);
 	pa(a, b);
 }
