@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:52:03 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/01 15:28:25 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:13:14 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_exit(void)
 {
-	write(2, "Error\n", 6);
+	ft_putstr_fd("Error\n", 2);
 	exit(1);
 }
 

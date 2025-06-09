@@ -6,13 +6,13 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:42:36 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/29 12:14:20 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:06:10 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-static void	reverse_rotate(t_stack *stack, char *op)
+static void	reverse_rotate(t_stack *stack, char *op, int silent)
 {
 	t_node	*prev;
 	t_node	*last;
@@ -29,23 +29,24 @@ static void	reverse_rotate(t_stack *stack, char *op)
 	prev->next = NULL;
 	last->next = stack->top;
 	stack->top = last;
-	if (op)
+	if (op && !silent)
 		write(1, op, 4);
 }
 
-void	rra(t_stack *a)
+void	rra(t_stack *a, int silent)
 {
-	reverse_rotate(a, "rra\n");
+	reverse_rotate(a, "rra\n", silent);
 }
 
-void	rrb(t_stack *b)
+void	rrb(t_stack *b, int silent)
 {
-	reverse_rotate(b, "rrb\n");
+	reverse_rotate(b, "rrb\n", silent);
 }
 
-void	rrr(t_stack *a, t_stack *b)
+void	rrr(t_stack *a, t_stack *b, int silent)
 {
-	reverse_rotate(a, NULL);
-	reverse_rotate(b, NULL);
-	write(1, "rrr\n", 4);
+	reverse_rotate(a, NULL, 1);
+	reverse_rotate(b, NULL, 1);
+	if (!silent)
+		write(1, "rrr\n", 4);
 }
