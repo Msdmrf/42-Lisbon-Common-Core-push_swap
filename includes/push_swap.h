@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:54:37 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/02 14:50:56 by migusant         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:06:57 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,18 @@ void		push(t_stack *stack, int value);
 int			pop(t_stack *stack);
 void		free_stack(t_stack *stack);
 
-// Stack Operations
-void		sa(t_stack *a);
-void		sb(t_stack *b);
-void		ss(t_stack *a, t_stack *b);
-void		pa(t_stack *a, t_stack *b);
-void		pb(t_stack *a, t_stack *b);
-void		ra(t_stack *a);
-void		rb(t_stack *b);
-void		rr(t_stack *a, t_stack *b);
-void		rra(t_stack *a);
-void		rrb(t_stack *b);
-void		rrr(t_stack *a, t_stack *b);
+// Stack Operations (with silent flag for bonus part)
+void		sa(t_stack *a, int silent);
+void		sb(t_stack *b, int silent);
+void		ss(t_stack *a, t_stack *b, int silent);
+void		pa(t_stack *a, t_stack *b, int silent);
+void		pb(t_stack *a, t_stack *b, int silent);
+void		ra(t_stack *a, int silent);
+void		rb(t_stack *b, int silent);
+void		rr(t_stack *a, t_stack *b, int silent);
+void		rra(t_stack *a, int silent);
+void		rrb(t_stack *b, int silent);
+void		rrr(t_stack *a, t_stack *b, int silent);
 
 // Stack Utilities
 int			find_min(t_stack *stack);
