@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 12:38:24 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/09 15:05:45 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:13:42 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static void	index_stack(t_stack *a)
 static int	sort_bit_a_to_b(t_stack *a, t_stack *b, int bit_pos, int bit_value)
 {
 	int	size;
-	int	i;
 	int	total_size;
 	int	max_bits;
+	int	i;
 
 	size = a->size;
 	total_size = a->size + b->size;
@@ -101,7 +101,7 @@ static int	sort_bit_b_to_a(t_stack *a, t_stack *b, int bit_pos, int bit_value)
 	return (0);
 }
 
-static void	remaining_bits(t_stack *a, t_stack *b, int bit, int max_bits)
+static void	process_bits(t_stack *a, t_stack *b, int bit, int max_bits)
 {
 	if (bit < max_bits)
 	{
@@ -110,10 +110,8 @@ static void	remaining_bits(t_stack *a, t_stack *b, int bit, int max_bits)
 	}
 	while (bit < max_bits)
 	{
-		if (b->size > 0)
-			sort_bit_b_to_a(a, b, bit, 1);
-		if (a->size > 0)
-			sort_bit_a_to_b(a, b, bit, 0);
+		sort_bit_b_to_a(a, b, bit, 1);
+		sort_bit_a_to_b(a, b, bit, 0);
 		bit++;
 	}
 	while (b->size > 0)
@@ -123,16 +121,12 @@ static void	remaining_bits(t_stack *a, t_stack *b, int bit, int max_bits)
 void	sort_radix(t_stack *a, t_stack *b)
 {
 	int	max_bits;
-	int	size;
 	int	bit;
 
-	if (a->size < 2 || is_sorted(a))
-		return ;
-	size = a->size;
 	index_stack(a);
 	max_bits = 0;
-	while ((size - 1) >> max_bits)
+	while ((a->size - 1) >> max_bits)
 		max_bits++;
 	bit = 0;
-	remaining_bits(a, b, bit, max_bits);
+	process_bits(a, b, bit, max_bits);
 }

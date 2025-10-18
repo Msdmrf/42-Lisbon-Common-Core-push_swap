@@ -6,19 +6,19 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:56:44 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/09 15:05:49 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:13:45 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-void	sort_two(t_stack *a)
+static void	sort_two(t_stack *a)
 {
 	if (a->top->value > a->top->next->value)
 		sa(a, 0);
 }
 
-void	sort_three(t_stack *a)
+static void	sort_three(t_stack *a)
 {
 	int	first;
 	int	second;
@@ -45,12 +45,12 @@ void	sort_three(t_stack *a)
 	}
 }
 
-void	sort_n(t_stack *a, t_stack *b, int n)
+static void	sort_n(t_stack *a, t_stack *b, int n)
 {
 	int	min;
 	int	pos;
 
-	if (n <= 1 || is_sorted(a))
+	if (n < 2 || is_sorted(a))
 		return ;
 	if (n == 2)
 		return (sort_two(a));
@@ -72,9 +72,7 @@ void	sort_n(t_stack *a, t_stack *b, int n)
 
 void	sort_dispatch(t_stack *a, t_stack *b)
 {
-	if (a->size < 2 || is_sorted(a))
-		return ;
-	else if (a->size <= 19)
+	if (a->size <= 19)
 		sort_n(a, b, a->size);
 	else
 		sort_radix(a, b);
