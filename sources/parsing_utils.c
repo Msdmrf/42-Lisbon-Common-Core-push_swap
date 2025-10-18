@@ -6,27 +6,13 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:08:52 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/29 12:16:05 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:13:35 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-int	has_content(const char *str)
-{
-	if (!str || !*str)
-		return (0);
-	while (*str)
-	{
-		if (!(*str == ' ' || *str == '\t' || *str == '\n'
-				|| *str == '\v' || *str == '\f' || *str == '\r'))
-			return (1);
-		str++;
-	}
-	return (0);
-}
-
-int	is_valid_number(char *str)
+static int	is_valid_number(char *str)
 {
 	int	i;
 
@@ -44,7 +30,7 @@ int	is_valid_number(char *str)
 	return (1);
 }
 
-int	ft_atoi_safe(const char *str, int *number)
+static int	ft_atoi_safe(const char *str, int *number)
 {
 	long	result;
 	int		sign;
@@ -73,14 +59,25 @@ int	ft_atoi_safe(const char *str, int *number)
 	return (*number = sign * result, 1);
 }
 
+static void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
 int	process_numbers(t_stack *stack, char *str)
 {
 	char	**numbers;
 	int		number;
 	int		i;
 
-	if (!has_content(str))
-		return (0);
 	numbers = ft_split(str, ' ');
 	if (!numbers)
 		return (0);
@@ -98,17 +95,4 @@ int	process_numbers(t_stack *stack, char *str)
 	}
 	free_split(numbers);
 	return (1);
-}
-
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
 }
