@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:23:54 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/09 15:05:29 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:48:21 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 	t_stack	*a;
 	t_stack	*b;
 
-	if (argc < 2 || argv[1][0] == '\0')
+	if (argc < 2)
 		return (0);
 	a = init_stack_a(argc, argv);
 	b = init_stack_b(a);
