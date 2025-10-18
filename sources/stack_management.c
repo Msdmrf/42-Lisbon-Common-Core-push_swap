@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:14:43 by migusant          #+#    #+#             */
-/*   Updated: 2025/05/29 12:17:34 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:13:51 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,6 @@ t_stack	*create_stack(char id)
 	stack->size = 0;
 	stack->id = id;
 	return (stack);
-}
-
-int	pop(t_stack *stack)
-{
-	int		value;
-	t_node	*tmp;
-
-	if (!stack->top)
-		error_exit();
-	tmp = stack->top;
-	value = tmp->value;
-	stack->top = tmp->next;
-	free(tmp);
-	stack->size--;
-	return (value);
 }
 
 void	push(t_stack *stack, int value)

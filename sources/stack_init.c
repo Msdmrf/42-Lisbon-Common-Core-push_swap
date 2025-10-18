@@ -6,7 +6,7 @@
 /*   By: migusant <migusant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 17:13:03 by migusant          #+#    #+#             */
-/*   Updated: 2025/06/09 15:13:07 by migusant         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:13:49 by migusant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ t_stack	*init_stack_a(int argc, char **argv)
 	t_stack	*a;
 
 	a = parse_arguments(argc, argv);
-	if (!a)
-		error_exit();
 	if (has_duplicate(a))
 	{
 		free_stack(a);
